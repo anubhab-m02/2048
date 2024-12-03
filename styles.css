@@ -200,3 +200,20 @@ h1 {
     color: #776e65;
     font-size: 16px;
 }
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: #776e65;
+    font-size: 14px;
+}
+
+.footer a {
+    color: #776e65;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
