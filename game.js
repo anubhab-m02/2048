@@ -7,8 +7,6 @@ class Game2048 {
         this.scoreDisplay = document.getElementById('score');
         this.undoButton = document.getElementById('undo-button');
         this.tiles = new Map();
-        this.cellSize = 106.25;
-        this.gridGap = 15;
         this.previousState = null;
         this.previousScore = 0;
         this.initializeGrid();
@@ -33,10 +31,15 @@ class Game2048 {
     }
 
     setTilePosition(tile, row, col) {
-        const position = (this.cellSize + this.gridGap) * row + this.gridGap;
-        const leftPosition = (this.cellSize + this.gridGap) * col + this.gridGap;
-        tile.style.top = `${position}px`;
-        tile.style.left = `${leftPosition}px`;
+        const tileSize = `calc((100% - 45px) / 4)`;  // Size of one tile
+        const gap = 15;  // Gap between tiles
+        
+        // Calculate position including gaps
+        const top = `calc(${row} * (${tileSize} + ${gap}px))`;
+        const left = `calc(${col} * (${tileSize} + ${gap}px))`;
+        
+        tile.style.top = top;
+        tile.style.left = left;
     }
 
     spawnTile() {
@@ -88,9 +91,9 @@ class Game2048 {
             setTimeout(() => this.spawnTile(), 150);
 
             if (this.isGameOver()) {
-                alert('Game Over!');
+                setTimeout(() => alert('Game Over!'), 200);
             } else if (this.hasWon()) {
-                alert('Congratulations! You won!');
+                setTimeout(() => alert('Congratulations! You won!'), 200);
             }
         }
     }
@@ -249,19 +252,11 @@ class Game2048 {
         for (let r = 0; r < this.gridSize; r++) {
             for (let c = 0; c < this.gridSize; c++) {
                 if (this.grid[r][c] === 0) return false;
+                
+                if (c < this.gridSize - 1 && this.grid[r][c] === this.grid[r][c + 1]) return false;
+                if (r < this.gridSize - 1 && this.grid[r][c] === this.grid[r + 1][c]) return false;
             }
         }
-        
-        for (let r = 0; r < this.gridSize; r++) {
-            for (let c = 0; c < this.gridSize; c++) {
-                const current = this.grid[r][c];
-                
-                if (c < this.gridSize - 1 && current === this.grid[r][c + 1]) return false;
-                
-                if (r < this.gridSize - 1 && current === this.grid[r + 1][c]) return false;
-            }
-        }
-        
         return true;
     }
 

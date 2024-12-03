@@ -10,6 +10,7 @@ body {
 
 .container {
     text-align: center;
+    width: 500px;
 }
 
 .header {
@@ -25,11 +26,19 @@ h1 {
     margin: 0;
 }
 
+.controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
 .score-container {
     background-color: #bbada0;
+    padding: 15px 25px;
+    border-radius: 3px;
     color: white;
-    padding: 10px;
-    border-radius: 5px;
+    min-width: 80px;
+    text-align: center;
 }
 
 .score-label {
@@ -42,50 +51,68 @@ h1 {
     font-weight: bold;
 }
 
+.control-button {
+    background: #8f7a66;
+    border-radius: 3px;
+    padding: 15px 30px;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.control-button:hover {
+    background: #9f8a76;
+    transform: scale(1.05);
+}
+
 .game-container {
     background-color: #bbada0;
     border-radius: 6px;
     width: 500px;
     height: 500px;
-    padding: 15px;
     position: relative;
+    padding: 15px;
+    box-sizing: border-box;
 }
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 106.25px);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 15px;
-    position: absolute;
-    top: 15px;
-    left: 15px;
+    height: 100%;
 }
 
 .grid-cell {
     background-color: rgba(238, 228, 218, 0.35);
     border-radius: 3px;
-    width: 106.25px;
-    height: 106.25px;
+    aspect-ratio: 1;
 }
 
 #tile-container {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    padding: 15px;
+    box-sizing: border-box;
 }
 
 .tile {
     position: absolute;
-    width: 106.25px;
-    height: 106.25px;
+    width: calc((100% - 45px) / 4);
+    height: calc((100% - 45px) / 4);
     transition: all 0.15s ease-in-out;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 3px;
     font-weight: bold;
-    font-size: 40px;
+    font-size: 35px;
 }
 
 .tile-2 { background-color: #eee4da; color: #776e65; }
@@ -99,27 +126,6 @@ h1 {
 .tile-512 { background-color: #edc850; color: white; }
 .tile-1024 { background-color: #edc53f; color: white; }
 .tile-2048 { background-color: #edc22e; color: white; }
-
-.controls {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.control-button {
-    background: #8f7a66;
-    border-radius: 3px;
-    padding: 10px 20px;
-    color: white;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.15s ease-in-out;
-}
-
-.control-button:hover {
-    background: #9f8a76;
-}
 
 .instructions {
     margin-top: 20px;
