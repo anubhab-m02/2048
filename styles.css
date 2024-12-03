@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #faf8ef;
+}
+
+.container {
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #776e65;
+    font-size: 80px;
+    margin: 0;
+}
+
+.score-container {
+    background-color: #bbada0;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.score-label {
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+#score {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.game-container {
+    background-color: #bbada0;
+    border-radius: 6px;
+    width: 500px;
+    height: 500px;
+    padding: 15px;
+    position: relative;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 106.25px);
+    grid-gap: 15px;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.grid-cell {
+    background-color: rgba(238, 228, 218, 0.35);
+    border-radius: 3px;
+    width: 106.25px;
+    height: 106.25px;
+}
+
+#tile-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.tile {
+    position: absolute;
+    width: 106.25px;
+    height: 106.25px;
+    transition: all 0.15s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.tile-2 { background-color: #eee4da; color: #776e65; }
+.tile-4 { background-color: #ede0c8; color: #776e65; }
+.tile-8 { background-color: #f2b179; color: white; }
+.tile-16 { background-color: #f59563; color: white; }
+.tile-32 { background-color: #f67c5f; color: white; }
+.tile-64 { background-color: #f65e3b; color: white; }
+.tile-128 { background-color: #edcf72; color: white; }
+.tile-256 { background-color: #edcc61; color: white; }
+.tile-512 { background-color: #edc850; color: white; }
+.tile-1024 { background-color: #edc53f; color: white; }
+.tile-2048 { background-color: #edc22e; color: white; }
+
+.instructions {
+    margin-top: 20px;
+    color: #776e65;
+    font-size: 16px;
+}
