@@ -6,9 +6,16 @@ class Game2048 {
         this.tileContainer = document.getElementById('tile-container');
         this.scoreDisplay = document.getElementById('score');
         this.undoButton = document.getElementById('undo-button');
+        this.gameMessage = document.getElementById('game-message');
+        this.messageDisplay = this.gameMessage.querySelector('.message');
+        this.restartButton = this.gameMessage.querySelector('.restart-button');
+        this.keepPlayingButton = this.gameMessage.querySelector('.keep-playing-button');
         this.tiles = new Map();
         this.previousState = null;
         this.previousScore = 0;
+        this.gameOver = false;
+        this.won = false;
+        this.keepPlaying = false;
         this.initializeGrid();
         this.addEventListeners();
         this.spawnTile();
@@ -62,9 +69,10 @@ class Game2048 {
     }
 
     move(direction) {
+        if (this.gameOver) return;
+        
         let moved = false;
         
-        // Save current state before move
         this.previousState = {
             grid: JSON.parse(JSON.stringify(this.grid)),
             score: this.score
@@ -88,13 +96,16 @@ class Game2048 {
         if (moved) {
             this.updateTiles();
             this.scoreDisplay.textContent = this.score;
-            setTimeout(() => this.spawnTile(), 150);
-
-            if (this.isGameOver()) {
-                setTimeout(() => alert('Game Over!'), 200);
-            } else if (this.hasWon()) {
-                setTimeout(() => alert('Congratulations! You won!'), 200);
-            }
+            setTimeout(() => {
+                this.spawnTile();
+                if (!this.won && this.hasWon()) {
+                    this.won = true;
+                    this.showMessage('You Win!', true);
+                } else if (this.isGameOver()) {
+                    this.gameOver = true;
+                    this.showMessage('Game Over!', false);
+                }
+            }, 150);
         }
     }
 
@@ -249,19 +260,58 @@ class Game2048 {
     }
 
     isGameOver() {
+        // Check for empty cells
         for (let r = 0; r < this.gridSize; r++) {
             for (let c = 0; c < this.gridSize; c++) {
                 if (this.grid[r][c] === 0) return false;
-                
+            }
+        }
+        
+        // Check for possible merges
+        for (let r = 0; r < this.gridSize; r++) {
+            for (let c = 0; c < this.gridSize; c++) {
                 if (c < this.gridSize - 1 && this.grid[r][c] === this.grid[r][c + 1]) return false;
                 if (r < this.gridSize - 1 && this.grid[r][c] === this.grid[r + 1][c]) return false;
             }
         }
+        
         return true;
     }
 
     hasWon() {
         return this.grid.some(row => row.includes(2048));
+    }
+
+    showMessage(message, isWin) {
+        this.messageDisplay.textContent = message;
+        this.keepPlayingButton.style.display = isWin ? 'block' : 'none';
+        this.gameMessage.classList.remove('hidden');
+    }
+
+    hideMessage() {
+        this.gameMessage.classList.add('hidden');
+    }
+
+    keepPlaying() {
+        this.keepPlaying = true;
+        this.hideMessage();
+    }
+
+    restart() {
+        this.grid = [];
+        this.score = 0;
+        this.scoreDisplay.textContent = '0';
+        this.previousState = null;
+        this.previousScore = 0;
+        this.tiles.clear();
+        this.tileContainer.innerHTML = '';
+        this.hideMessage();
+        this.gameOver = false;
+        this.won = false;
+        this.keepPlaying = false;
+        this.initializeGrid();
+        this.spawnTile();
+        this.spawnTile();
     }
 
     addEventListeners() {
@@ -273,7 +323,17 @@ class Game2048 {
         });
 
         this.undoButton.addEventListener('click', () => {
-            this.undo();
+            if (!this.gameOver) {
+                this.undo();
+            }
+        });
+
+        this.restartButton.addEventListener('click', () => {
+            this.restart();
+        });
+
+        this.keepPlayingButton.addEventListener('click', () => {
+            this.keepPlaying();
         });
     }
 }
