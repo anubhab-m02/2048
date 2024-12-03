@@ -100,6 +100,27 @@ h1 {
 .tile-1024 { background-color: #edc53f; color: white; }
 .tile-2048 { background-color: #edc22e; color: white; }
 
+.controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.control-button {
+    background: #8f7a66;
+    border-radius: 3px;
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.control-button:hover {
+    background: #9f8a76;
+}
+
 .instructions {
     margin-top: 20px;
     color: #776e65;

@@ -5,9 +5,12 @@ class Game2048 {
         this.score = 0;
         this.tileContainer = document.getElementById('tile-container');
         this.scoreDisplay = document.getElementById('score');
+        this.undoButton = document.getElementById('undo-button');
         this.tiles = new Map();
         this.cellSize = 106.25;
         this.gridGap = 15;
+        this.previousState = null;
+        this.previousScore = 0;
         this.initializeGrid();
         this.addEventListeners();
         this.spawnTile();
@@ -57,17 +60,13 @@ class Game2048 {
 
     move(direction) {
         let moved = false;
-        const oldGrid = JSON.parse(JSON.stringify(this.grid));
         
-        const positions = new Map();
-        for (let r = 0; r < this.gridSize; r++) {
-            for (let c = 0; c < this.gridSize; c++) {
-                if (this.grid[r][c] !== 0) {
-                    positions.set(`${r}-${c}`, this.grid[r][c]);
-                }
-            }
-        }
-
+        // Save current state before move
+        this.previousState = {
+            grid: JSON.parse(JSON.stringify(this.grid)),
+            score: this.score
+        };
+        
         switch (direction) {
             case 'ArrowLeft':
                 moved = this.moveLeft();
@@ -84,16 +83,7 @@ class Game2048 {
         }
 
         if (moved) {
-            this.tileContainer.innerHTML = '';
-            for (let r = 0; r < this.gridSize; r++) {
-                for (let c = 0; c < this.gridSize; c++) {
-                    if (this.grid[r][c] !== 0) {
-                        const tile = this.createTile(this.grid[r][c], r, c);
-                        this.tiles.set(`${r}-${c}`, tile);
-                    }
-                }
-            }
-            
+            this.updateTiles();
             this.scoreDisplay.textContent = this.score;
             setTimeout(() => this.spawnTile(), 150);
 
@@ -102,6 +92,29 @@ class Game2048 {
             } else if (this.hasWon()) {
                 alert('Congratulations! You won!');
             }
+        }
+    }
+
+    updateTiles() {
+        this.tileContainer.innerHTML = '';
+        this.tiles.clear();
+        for (let r = 0; r < this.gridSize; r++) {
+            for (let c = 0; c < this.gridSize; c++) {
+                if (this.grid[r][c] !== 0) {
+                    const tile = this.createTile(this.grid[r][c], r, c);
+                    this.tiles.set(`${r}-${c}`, tile);
+                }
+            }
+        }
+    }
+
+    undo() {
+        if (this.previousState) {
+            this.grid = JSON.parse(JSON.stringify(this.previousState.grid));
+            this.score = this.previousState.score;
+            this.scoreDisplay.textContent = this.score;
+            this.updateTiles();
+            this.previousState = null;
         }
     }
 
@@ -262,6 +275,10 @@ class Game2048 {
                 e.preventDefault();
                 this.move(e.key);
             }
+        });
+
+        this.undoButton.addEventListener('click', () => {
+            this.undo();
         });
     }
 }
